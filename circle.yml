@@ -7,5 +7,4 @@ test:
   # After running tests collect junit reports and build artifacts
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - rm -f $CIRCLE_TEST_REPORTS/junit/*
     - find . -type f -regex "./samples/TEST.*" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;  #JUnit tests
