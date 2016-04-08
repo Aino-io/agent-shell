@@ -35,7 +35,7 @@ if [ "$2" == "unittest" ]; then
     rm -f success.count failure.count ids.out
 fi
 I=0
-echo "CRM exporting $N updates"
+output "CRM exporting $N updates"
 
 N_SUCCESS=0
 N_FAILURE=0
@@ -53,11 +53,11 @@ do
 
     # Introduce an error to the file with frequency of 1/5 (20%). Keep count of successes and failures
     if [ "`one_in_five`" = "true" ]; then
-        echo "CRM: Exporting BROKEN customer details update to $FILENAME"
+        output "CRM: Exporting BROKEN customer details update to $FILENAME"
         echo "<THIS IS BROKEN XML>" >> $DEMO_BASE/in/${FILENAME}
         N_FAILURE="`expr $N_FAILURE + 1`"
     else
-        echo "CRM: Exporting customer details update to $FILENAME"
+        output "CRM: Exporting customer details update to $FILENAME"
             N_SUCCESS="`expr $N_SUCCESS + 1`"
     fi
     sleep 1

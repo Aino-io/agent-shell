@@ -26,6 +26,10 @@ if [ "$AINO_URL" = "" ]; then
 fi
 IDS=""
 
+if [ -e "${AINO_HOME}/base-functions.sh" ]; then
+    . "${AINO_HOME}/base-functions.sh"
+fi
+
 
 timestamp() {
     date +"%s"

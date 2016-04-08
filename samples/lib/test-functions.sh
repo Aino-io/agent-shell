@@ -11,47 +11,84 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-
+if [ -e "${AINO_HOME}/base-functions.sh" ]; then
+    . "${AINO_HOME}/base-functions.sh"
+fi
 extract_tag() {
     TAG="$1"
     xmllint --recover --format "$2" 2>/dev/null | grep "$TAG" |cut -d'>' -f2|cut -d'<' -f1|tr '\n' ' '
 }
 
 start_suite() {
-    SUITE_NAME="$1"
-    export T0="`date +%s`"
-    N_TESTS=0
-    FAILURES=0
-    TESTCASES=""
+    export SUITE_NAME="$1"
+    export TSTART="`date +%s`"
+
+    export N_TESTS=0
+    export FAILURES=0
+    export TESTCASES=""
 }
 
+start_test() {
+    export T0="`date +%s`"
+
+}
 record_failure() {
-    N_TESTS=`expr $N_TESTS + 1`
-    FAILURES=`expr $FAILURES + 1`
+    export N_TESTS=`expr $N_TESTS + 1`
+    export FAILURES=`expr $FAILURES + 1`
     NAME=$1
     MESSAGE=$2
     OUTPUT=$3
-    TESTCASES="${TESTCASES}
-    <testcase name=\"$NAME\" time=\"$SECONDS\">"
-    TESTCASES="${TESTCASES}
-    <failure message=\"$MESSAGE\" type=\"Assertion error\"><![CDATA["
-    TESTCASES="${TESTCASES}
-    ${OUTPUT}]]></failure>"
-    TESTCASES="${TESTCASES}</testcase>"
+    T1="`date +%s`"
+    SECONDS="`expr $T1 - $T0`"
+    export TESTCASES="${TESTCASES}
+    <testcase name=\"$NAME\" time=\"$SECONDS\">
+    <failure message=\"$MESSAGE\" type=\"Assertion error\"><![CDATA[
+    ${OUTPUT}]]></failure>
+    ${TESTCASES}</testcase>"
+    red
+    echo "Test case $NAME failed in $SECONDS seconds"
+    normal
+
+}
+
+output() {
+    if [ "$SILENT_MODE" != "1" ]; then
+        echo "$1"
+    fi
+
 }
 record_success() {
-    N_TESTS=`expr $N_TESTS + 1`
+    export N_TESTS=`expr $N_TESTS + 1`
     NAME=$1
-    T2="`date +%s`"
-    SECONDS="`expr $T2 - $T0`"
-    TESTCASES="${TESTCASES}
+    T1="`date +%s`"
+    SECONDS="`expr $T1 - $T0`"
+    export TESTCASES="${TESTCASES}
     <testcase name=\"$NAME\" time=\"$SECONDS\"></testcase>
     "
+    green
+    echo "Test case $NAME successful in $SECONDS seconds"
+    normal
 }
+output_summary() {
+
+    echo
+    echo "Suite $SUITE_NAME completed in $SUITE_DURATION seconds"
+
+    if [ "$FAILURES" -gt 0 ]; then
+        red
+    fi
+    if [ "$FAILURES" = 0 ]; then
+       green
+    fi
+    echo "Ran $N_TESTS tests. There were $FAILURES failures"
+    normal
+
+}
+
 output_suite() {
-        T1="`date +%s`"
-        SECONDS="`expr $T1 - $T0`"
-        echo "<testsuite name=\"$SUITE_NAME\" time=\"$SECONDS\" tests=\"$N_TESTS\" errors=\"0\" skipped=\"0\" failures=\"$FAILURES\">"
+        T2="`date +%s`"
+        export SUITE_DURATION="`expr $T2 - $TSTART`"
+        echo "<testsuite name=\"$SUITE_NAME\" time=\"$SUITE_DURATION\" tests=\"$N_TESTS\" errors=\"0\" skipped=\"0\" failures=\"$FAILURES\">"
         echo "$TESTCASES"
         echo "</testsuite>"
 

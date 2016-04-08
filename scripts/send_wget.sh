@@ -1,4 +1,21 @@
 #!/bin/sh
+#   Copyright 2016 Aino.io
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+
+if [ -e "${AINO_HOME}/base-functions.sh" ]; then
+    . "${AINO_HOME}/base-functions.sh"
+fi
 	if [ "`which wget`" = "" ]; then
 		echo "Wget not found."
 		exit 1
@@ -20,13 +37,8 @@
     ERROR="`echo \"$OUTPUT\"|tail -n1`"
 
 	if [ "$STATUSCODE" != "200" -a "$STATUSCODE" != "202" ]; then
-        if [ "`which tput`" != "" ]; then
-            tput setaf 1
-
-        fi
+        red
 	    echo "Error: Failed to send message to aino: $STATUSCODE $ERROR"
-	    if [ "`which tput`" != "" ]; then
-            tput sgr0
-        fi
+	    normal
     fi
 

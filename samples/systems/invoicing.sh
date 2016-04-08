@@ -21,10 +21,10 @@ cd $DEMO_BASE/in
 process() {
     FILE="$1"
     if [ "`is_valid "$FILE"`" = "true" ]; then
-        echo "Invoicing: file $FILE processed succesfully"
+        output "Invoicing: file $FILE processed succesfully"
         log_to_aino "$FILE" success
     else
-        echo "Invoicing: file $FILE processing failed"
+        output "Invoicing: file $FILE processing failed"
         log_to_aino "$FILE" failure
     fi
     rm "$FILE"
@@ -44,7 +44,7 @@ do
 
 
     if [ "$N" -gt 10 ]; then
-        echo "No new messages for invoicing in 10 seconds, exiting"
+        output "No new messages for invoicing in 10 seconds, exiting"
         exit 0
     fi
     sleep 1
