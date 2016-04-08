@@ -70,13 +70,18 @@ stays the same in all the programs that process the file.
 
 By default it can be left empty, in which case the aino.io shell agent will generate it for you.
 
-If you have a script that does multiple invocations into aino.io for the same file, then you will want to
+If you have a script that logs multiple transactions into aino.io for the same file, then you will want to
 call
 ```
 init_flow_id
 ```
-at the beginning of your script. This will ensure that the same flow id is passed for each call into aino.io done from the
-current script.
+when you begin new sequence of transactions. This will ensure that the same flow id is passed for each call into aino.io
+and ensure that the relevant transactions are grouped into a sequence.
+
+To have `init_flow_id` function available in your script, include aino.io function library into your script using
+ ```
+ . ${AINO_HOME}/aino-library.sh
+ ```
 
 # Tested environments
 
