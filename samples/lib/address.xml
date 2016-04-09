@@ -1,0 +1,29 @@
+<customers>
+    <customer>
+        <customerId>CUSTOMER_ID1</customerId>
+        <address>
+            <streetName>STREET1</streetName>
+            <city>CITY1</city>
+            <postalCode>POSTAL_CODE1</postalCode>
+            <country>COUNTRY1</country>
+        </address>
+    </customer>
+    <customer>
+        <customerId>CUSTOMER_ID2</customerId>
+        <address>
+            <streetName>STREET2</streetName>
+            <city>CITY2</city>
+            <postalCode>POSTAL_CODE2</postalCode>
+            <country>COUNTRY2</country>
+        </address>
+    </customer>
+    <customer>
+        <customerId>CUSTOMER_ID3</customerId>
+        <address>
+            <streetName>STREET3</streetName>
+            <city>CITY3</city>
+            <postalCode>POSTAL_CODE3</postalCode>
+            <country>COUNTRY3</country>
+        </address>
+    </customer>
+</customers>
