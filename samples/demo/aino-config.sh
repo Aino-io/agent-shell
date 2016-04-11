@@ -5,3 +5,6 @@
 export AINO_API_KEY="<your-api-key-here>"
 
 # Other variables that can be set here: IMPLEMENTATION, AINO_URL
+#
+# To force use of wget, enable this
+# export IMPLEMENTATION=wget
