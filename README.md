@@ -1,4 +1,4 @@
-# Bourne Shell Agent for Aino.io
+# Bourne Shell Agent for Aino.io ![Build status](https://circleci.com/gh/Mystes/aino.io-shell-plugin.svg?style=shield&circle-token=39b20966002ecb7dc7344b7d296dce73b7828761)
 
 ![Build status](https://circleci.com/gh/Aino-io/agent-shell.svg?style=shield&circle-token=bde6cb9153f5ed7e43f6b99a8489b1b36b0dcb83)
 

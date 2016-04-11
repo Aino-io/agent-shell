@@ -26,14 +26,14 @@ ${AINO_HOME}/aino.sh --from "CRM" --to "Invoicing" --status "success" \
            --flowid "af75d5da-5a5c-4cf2-bd6e-3be813ea2145" \
            --id "Customer ID" "123" \
            --id "Order ID" "234" \
-           --id "Random ID" "abc" "123" "xyzzy"
+           --id "Random ID" "abc" "123" "xyzzy" >& /dev/null
 sleep 1
 
 CURL_OUT="`cat curl.out`"
 # Verify that the output contains Invalid API key
-if [ "`echo $CURL_OUT|grep \"Invalid API key\"`" = "" ]; then
-    record_failure testAinoResponseForInvalidRequest "Wrong response from aino.io for invalid request" "$CURL_OUT"
+if [ "`echo $CURL_OUT|grep \"401\"`" = "" ]; then
+    record_failure testAinoResponseForInvalidRequestWith${1} "Wrong response from aino.io for invalid request" "$CURL_OUT"
     EXIT_CODE=1
 else
-    record_success testAinoResponseForInvalidRequest
+    record_success testAinoResponseForInvalidRequestWith${1}
 fi

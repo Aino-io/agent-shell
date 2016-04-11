@@ -29,14 +29,14 @@ if [ "$AINO_API_KEY" != "" ]; then
                --flowid "af75d5da-5a5c-4cf2-bd6e-3be813ea2145" \
                --id "Customer ID" "123" \
                --id "Order ID" "234" \
-               --id "Random ID" "abc" "123" "xyzzy"
+               --id "Random ID" "abc" "123" "xyzzy" >& /dev/null
     sleep 1
     CURL_OUT="`cat curl.out`"
     # Check that we got correct response from Aino for our invocations
     if [ "`grep batchId curl.out`" != "" ]; then
-        record_success testAinoResponse
+        record_success testAinoResponseWith${1}
     else
-        record_failure testAinoResponse "Wrong response from aino.io, expected to contain batchId" "$CURL_OUT"
+        record_failure testAinoResponseWith${1} "Wrong response from aino.io, expected to contain batchId" "$CURL_OUT"
         EXIT_CODE=1
     fi
 fi

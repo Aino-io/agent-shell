@@ -27,12 +27,12 @@ fi
 	if [ "$AINO_HTTP_OUT" != "" ]; then
 	    OUT=$AINO_HTTP_OUT
 	fi
-
-    OUTPUT="`wget -nv --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"$2\" -o $OUT -O $OUT`"
+    OUTPUT="`wget -nv --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"$2\" -O - 2>&1`"
 	if [ "${VERBOSE_AINO}" = "true" ]; then
     	echo "$OUTPUT"
     fi
     echo "$OUTPUT" > $OUT
+
     STATUSCODE="`echo \"$OUTPUT\"|head -n1|cut -d' ' -f4`"
     ERROR="`echo \"$OUTPUT\"|tail -n1`"
 
