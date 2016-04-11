@@ -18,8 +18,9 @@
 
 # Implementation can be one of autodetect / curl / wget. Value autodetect will detect presence of either curl or wget. It is the default
 # The setting can also be overwritten int aino-config.sh
-IMPLEMENTATION="autodetect"
-
+if [ "$IMPLEMENTATION" = "" ]; then
+    IMPLEMENTATION="autodetect"
+fi
 # This is the URL to which data will be posted. This variable can also be overwritten in the aino-config if needed
 if [ "$AINO_URL" = "" ]; then
     AINO_URL="https://data.aino.io/rest/v2.0/transaction"
@@ -122,6 +123,7 @@ do_send() {
     if [ "${IMPLEMENTATION}" = "autodetect" ]; then
         IMPLEMENTATION=`detect_implementation`
     fi
+
 	if [ "${IMPLEMENTATION}" = "curl" ]; then
 	    ${AINO_HOME}/send_curl.sh "$1" "$2" "$AINO_URL" "$AINO_API_KEY" &
 	elif [ "${IMPLEMENTATION}" = "wget" ]; then

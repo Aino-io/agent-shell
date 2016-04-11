@@ -24,7 +24,7 @@ echo > $AINO_PAYLOAD_OUT
 export EXIT_CODE=0
 
 cleanup() {
-    rm -f aino.out ids.out failure.count success.count failures.txt
+    rm -f aino.out ids.out failure.count success.count curl.out failures.txt
 }
 # Do not read AINO_API_KEY so we can use one from CI environment
 #. $DEMO_BASE/demo/aino-config.sh
@@ -35,8 +35,17 @@ cleanup
 start_suite "io.aino.shell.ShellAgentTest"
 
 . tests/test_twosystem.sh
-. tests/test_aino_log_success.sh
-. tests/test_aino_log_failure.sh
+
+for IMPL in Wget Curl
+do
+    export IMPLEMENTATION=`echo $IMPL|tr A-Z a-z`
+    OK_API_KEY=$AINO_API_KEY
+
+    . tests/test_aino_log_success.sh $IMPL
+    . tests/test_aino_log_failure.sh $IMPL
+
+    export AINO_API_KEY=$OK_API_KEY
+done
 
 output_suite > $SUREFIRE
 
