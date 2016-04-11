@@ -119,7 +119,10 @@ is_valid() {
 }
 
 one_in_five() {
-    cities=("false" "false" "true" "false" "false")
-    city=${cities[$RANDOM % ${#cities[@]} ]}
-    echo $city
+    N="`date +%s|cut -c10`"
+    if [ "$N" = "1" -o "$N" = "5" ]; then
+        echo true
+    else
+        echo false
+    fi
 }
