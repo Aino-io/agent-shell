@@ -1,5 +1,6 @@
-# Bourne Shell Agent for Aino.io ![Build status](https://circleci.com/gh/Aino-io/agent-shell.svg?style=shield&circle-token=bde6cb9153f5ed7e43f6b99a8489b1b36b0dcb83)
-Bourne shell implementation of Aino.io logging agent
+# Bourne Shell Agent for Aino.io
+
+![Build status](https://circleci.com/gh/Aino-io/agent-shell.svg?style=shield&circle-token=bde6cb9153f5ed7e43f6b99a8489b1b36b0dcb83)
 
 Download the latest beta-release: [agent-shell-amster_1.0-beta.zip](https://github.com/Aino-io/agent-shell/releases/download/v1.0-beta/agent-shell-master_1.0-beta.zip)
 
