@@ -29,6 +29,7 @@ fi
 	fi
     OUTPUT="`wget -nv --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"$2\" -O - 2>&1`"
 	if [ "${VERBOSE_AINO}" = "true" ]; then
+	    echo "Command: wget -nv --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"$2\" -O - 2>&1"
     	echo "$OUTPUT"
     fi
     echo "$OUTPUT" > $OUT

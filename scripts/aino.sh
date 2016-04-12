@@ -77,6 +77,10 @@ do
       FLOWID="$2"
       ;;
     --id)
+        if [ "$#" -lt 3 ]; then
+            echo "Invalid parameters passed to aino.sh: $*"
+            exit 1
+        fi
         shift # Shift the --id off stack
         ID_TYPE="$1"
         shift # Shift the type off the stack
