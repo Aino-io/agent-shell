@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 
 #   Copyright 2016 Aino.io
 #
@@ -19,7 +19,6 @@ start_test
 
 
 export SILENT_MODE=1
-
 ./systems/invoicing.sh &
 ./systems/crm.sh 10 unittest
 

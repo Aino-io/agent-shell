@@ -1,4 +1,4 @@
-#! /bin/bash
+#! /bin/sh
 
 #   Copyright 2016 Aino.io
 #
@@ -29,7 +29,7 @@ if [ "$AINO_API_KEY" != "" ]; then
                --flowid "af75d5da-5a5c-4cf2-bd6e-3be813ea2145" \
                --id "Customer ID" "123" \
                --id "Order ID" "234" \
-               --id "Random ID" "abc" "123" "xyzzy" >& /dev/null
+               --id "Random ID" "abc" "123" "xyzzy" 2>&1 > /dev/null
     sleep 1
     CURL_OUT="`cat curl.out`"
     # Check that we got correct response from Aino for our invocations
