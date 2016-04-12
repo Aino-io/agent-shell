@@ -28,12 +28,14 @@ fi
 	AINO_API_KEY="$4"
 	if [ "${VERBOSE_AINO}" = "true" ]; then
     	OUTPUT="`curl -w \"\n%{http_code}\n\" -v -X POST -H\"Authorization: apikey ${AINO_API_KEY}\" -H'Content-type: application/json' ${AINO_URL} --data \"$2\" 2>&1`"
+    	echo "Command: curl -w \"\n%{http_code}\n\" -v -X POST -H\"Authorization: apikey ${AINO_API_KEY}\" -H'Content-type: application/json' ${AINO_URL} --data \"$2\" 2>&1"
     	echo "$OUTPUT"
         echo "$OUTPUT" > $OUT
         STATUSCODE="`echo \"$OUTPUT\"|tail -n1`"
         ERROR="`echo \"$OUTPUT\"|tail -n2|head -n1`"
 	else
     	OUTPUT="`curl --silent  -w \"\n%{http_code}\n\"  -X POST -H\"Authorization: apikey \${AINO_API_KEY}\" -H"Content-type: application/json" ${AINO_URL} --data \"$2\" 2>&1`"
+    	echo "Command: curl --silent  -w \"\n%{http_code}\n\"  -X POST -H\"Authorization: apikey \${AINO_API_KEY}\" -H"Content-type: application/json" ${AINO_URL} --data \"$2\" 2>&1"
         echo "$OUTPUT" > $OUT
         STATUSCODE="`echo \"$OUTPUT\"|tail -n1`"
         ERROR="`echo \"$OUTPUT\"|tail -n2|head -n1`"
