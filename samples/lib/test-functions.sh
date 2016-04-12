@@ -16,7 +16,11 @@ if [ -e "${AINO_HOME}/base-functions.sh" ]; then
 fi
 extract_tag() {
     TAG="$1"
-    xmllint --recover --format "$2" 2>/dev/null | grep "$TAG" |cut -d'>' -f2|cut -d'<' -f1|tr '\n' ' '
+    if [ "`which xmllint`" != "" ]; then
+        xmllint --recover --format "$2" 2>/dev/null | grep "$TAG" |cut -d'>' -f2|cut -d'<' -f1|tr '\n' ' '
+    else
+        grep "$TAG" "$2" |cut -d'>' -f2|cut -d'<' -f1|tr '\n' ' '
+    fi
 }
 
 start_suite() {
@@ -114,7 +118,13 @@ log_to_aino() {
 
 is_valid() {
     VALID=false
-    xmllint "$1" >& /dev/null && VALID=true
+    if [ "`which xmllint`" != "" ]; then
+        xmllint "$1" >& /dev/null && VALID=true
+    else
+        if [ "`grep BROKEN \"$1\"`" = "" ]; then
+            VALID=true
+        fi
+    fi
     echo $VALID
 }
 
