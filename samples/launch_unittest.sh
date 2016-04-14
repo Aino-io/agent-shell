@@ -35,6 +35,7 @@ cleanup
 start_suite "io.aino.shell.ShellAgentTest"
 
 . tests/test_twosystem.sh
+. tests/test_aino_metadata.sh
 
 for IMPL in Wget Curl
 do
@@ -46,6 +47,7 @@ do
 
     export AINO_API_KEY=$OK_API_KEY
 done
+
 
 output_suite > $SUREFIRE
 
