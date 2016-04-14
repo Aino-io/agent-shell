@@ -24,34 +24,47 @@ if [ -e "${AINO_HOME}/aino-library.sh" ]; then
     . "${AINO_HOME}/aino-library.sh"
 fi
 
-if [ "$#" -lt 10 ]; then
-    help
-    exit 1
-fi
 
 
-help() {
+print_help() {
     echo "Usage: aino.sh --from \"<origin system>\" --to \"<target system>\" --status \"<success|failure>\"  --message \"<message explaining transaction>\" \\"
     echo "               --operation \"<business process name>\" --payload \"<type of payload>\""
 
     echo ""
     echo "Optional flags:"
-	echo "--flowid \"[flowid]\""
-    echo "--verbose     Do verbose output"
+	echo "  --flowid    \"[flowid]\"            Send the specified value as flow ID"
+    echo "  --verbose                           Do verbose output"
+    echo "  --config    <configuration file>    Load aino.io configuration (e.g. API key) from this file"
+
     echo ""
     echo "Identifier handling:"
-    echo "--id \"ID name\" \"ID value\""
-    echo "Or for multivalued IDs (arrays of values):"
-    echo "--id \"ID name\" \"ID value 1\" \"ID value 2\" \"ID value 3\""
+    echo "  Single field:"
+    echo "    --id \"ID name\" \"ID value\""
+    echo "  Or for multivalued IDs (arrays of values):"
+    echo "    --id \"ID name\" \"ID value 1\" \"ID value 2\" \"ID value 3\""
+    echo ""
+    echo "Metadata (optional):"
+    echo "  You can send any metadata related to the call by using the --metadata option:"
+    echo "  --metadata \"Metadata field\" \"Value of field\""
+    echo "  --send-hostname Sends the hostname where the script is running as metadata"
+    echo "  --send-artifact Sends information about the script that is calling aino as metadata"
     exit 1
 
 
 }
 
+if [ "$#" -lt 10 ]; then
+    print_help
+    exit 1
+fi
 while [ $# -gt 0 ]
 do
 
   case "$1" in
+    --help)
+        print_help
+        exit 0
+    ;;
     --config)
         . "$2"
     ;;
@@ -86,6 +99,23 @@ do
         shift # Shift the type off the stack
         add_aino_id "$ID_TYPE" $*
       ;;
+   --metadata)
+        if [ "$#" -lt 3 ]; then
+            echo "Invalid parameters passed to aino.sh: $*"
+            exit 1
+        fi
+        shift # Shift the --id off stack
+        METADATA_FIELD="$1"
+        shift # Shift the type off the stack
+        add_aino_metadata "$METADATA_FIELD" "$1"
+      ;;
+    --send-artifact)
+        add_aino_metadata "artifactType" "shellScript"
+        add_aino_metadata "artifactName" "`ps -o args= $PPID`"
+    ;;
+    --send-hostname)
+        add_aino_metadata "serverName" "`hostname`"
+    ;;
     --verbose)
         export VERBOSE_AINO=true
       ;;

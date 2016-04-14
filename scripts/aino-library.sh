@@ -26,6 +26,7 @@ if [ "$AINO_URL" = "" ]; then
     AINO_URL="https://data.aino.io/rest/v2.0/transaction"
 fi
 IDS=""
+METADATA=""
 
 if [ -e "${AINO_HOME}/base-functions.sh" ]; then
     . "${AINO_HOME}/base-functions.sh"
@@ -77,10 +78,10 @@ append_id() {
 add_aino_id() {
         ID_TYPE="$1"
         shift
-        append_id "$ID_TYPE" "`generate_id_value $*`"
+        append_id "$ID_TYPE" "`get_until_option $*`"
 }
 
-generate_id_value() {
+get_until_option() {
     CONT="true"
     GEN_VALUE=""
     while [ "$CONT" = "true" ]; do
@@ -99,6 +100,29 @@ generate_id_value() {
     done
     echo "$GEN_VALUE"
 }
+
+# Metadata handling functions
+
+
+reset_aino_metadata() {
+    METADATA=""
+}
+
+get_aino_metadata() {
+    if [ "$METADATA" != "" ]; then
+        echo "\"metadata\": [ $METADATA ],"
+
+    fi
+}
+
+
+add_aino_metadata() {
+    if [ "$METADATA" != "" ]; then
+        METADATA="${METADATA},"
+    fi
+    METADATA="$METADATA{  \"name\": \"$1\", \"value\": \"$2\" }"
+}
+
 
 init_flow_id() {
 	export EXPORTED_AINO_FLOW_ID="`generate_flow_id`"
@@ -184,6 +208,7 @@ aino_log() {
 
 
 create_json() {
+    METADATA_OUT="`get_aino_metadata`"
     cat << :EOF:
 
 {
@@ -197,6 +222,7 @@ create_json() {
       "operation": "${OPERATION}",
       "payloadType": "${PAYLOAD}",
        ${IDS}
+       ${METADATA_OUT}
       "flowId": "${FLOW_ID}"
     }
   ]
