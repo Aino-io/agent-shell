@@ -2,7 +2,7 @@
 
 ![Build status](https://circleci.com/gh/Aino-io/agent-shell.svg?style=shield&circle-token=bde6cb9153f5ed7e43f6b99a8489b1b36b0dcb83)
 
-Download the latest beta-release: [agent-shell-amster_1.0-beta.zip](https://github.com/Aino-io/agent-shell/releases/download/v1.0-beta/agent-shell-master_1.0-beta.zip)
+Download the latest beta-release: [agent-shell-amster_1.0-beta3.zip](https://github.com/Aino-io/agent-shell/releases/download/v1.0-beta3/agent-shell_1.0-beta3.zip)
 
 ## What is [Aino.io](http://aino.io) and what does this Agent have to do with it?
 
@@ -56,9 +56,12 @@ ${AINO_HOME}/aino.sh --from "Source system" --to "Target system" --status "succe
 		  --message "Message describing what happened." \
           --payload "Type of data transferred" --operation "Operation (business process) name" \
            --flowid "Identifier for this transaction. Leave empty to generate automatically " \
-           --id "Random ID" "abc" "123" "xyzzy" \
+           --id "Some Identifier" "abcc" "dddef" "xyzzy" \
+           --id "Another Identifier" "123" "456" "789" \
            --config /path/to/aino-config.sh
 ```
+
+Note that when identifiers are passed with the `--id` flag, the first string is interpreted as the human-readable type or name of the identifier, and the following list of strings are interpreted as the actual identifiers.
 
 If you wish to see what the aino client is doing, pass the `--verbose` flag into the aino.sh invocation.
 
