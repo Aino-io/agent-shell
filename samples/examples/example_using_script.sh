@@ -26,5 +26,4 @@ ${AINO_HOME}/aino.sh --from "CRM" --to "Invoicing" --status "success" \
            --send-artifact \
            --send-hostname \
            --metadata "Custom metadata field" "metadata value" \
-           --config ../demo/aino-config.sh \
-           --verbose
+           --config ../demo/aino-config.sh
