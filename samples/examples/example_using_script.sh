@@ -23,8 +23,7 @@ ${AINO_HOME}/aino.sh --from "CRM" --to "Invoicing" --status "success" \
            --id "Customer ID" "123" \
            --id "Order ID" "234" \
            --id "Random ID" "abc" "123" "xyzzy" \
-           --send-artifact \
            --send-hostname \
            --metadata "Custom metadata field" "metadata value" \
-           --config ../demo/aino-config.sh \
-           --verbose
+           --config ../demo/aino-config.sh
+           $*

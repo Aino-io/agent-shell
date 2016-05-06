@@ -29,27 +29,27 @@ fi
 	fi
     GZIP_EXISTS=$(check_gzip)
     MKTEMP_EXISTS=$(check_mktemp)
-    if [ "$AINO_DISABLE_GZIP" = "true" -o $GZIP_EXISTS != "true" -o $MKTEMP_EXISTS != "true" ]; then
-        OUTPUT="`wget -nv --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"$2\" -O - 2>&1`"
+    if [ "$AINO_DISABLE_GZIP" = "true" -o "$GZIP_EXISTS" != "true" -o "$MKTEMP_EXISTS" != "true" ]; then
+        OUTPUT="`wget --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"$2\" -O - 2>&1`"
     else
         GZIP_TMP_FILE=`mktemp`
         echo "$2" | gzip -cf - > $GZIP_TMP_FILE
-        OUTPUT="`wget -nv --server-response --header=\"Content-Encoding: gzip\" --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-file $GZIP_TMP_FILE -O - 2>&1`"
+        OUTPUT="`wget --server-response --header=\"Content-Encoding: gzip\" --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-file $GZIP_TMP_FILE -O - 2>&1`"
         rm $GZIP_TMP_FILE
     fi
 
 	if [ "${VERBOSE_AINO}" = "true" ]; then
         if [ -n ${GZIP_TMP_FILE+x} ]; then
-            echo "Command: wget -nv --server-response --header=\"Content-Encoding: gzip\" --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-file $GZIP_TMP_FILE -O - 2>&1"
+            echo "Command: wget --server-response --header=\"Content-Encoding: gzip\" --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-file $GZIP_TMP_FILE -O - 2>&1"
             echo "$OUTPUT"
         else
-            echo "Command: wget -nv --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"payload\" -O - 2>&1"
+            echo "Command: wget --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"payload\" -O - 2>&1"
         	echo "$OUTPUT"
         fi
     fi
     echo "$OUTPUT" > $OUT
 
-    STATUSCODE="`echo \"$OUTPUT\"|head -n1|cut -d' ' -f4`"
+    STATUSCODE="`echo \"$OUTPUT\"|grep HTTP/|cut -d'/' -f2|cut -d' ' -f2`"
     ERROR="`echo \"$OUTPUT\"|tail -n1`"
 
 	if [ "$STATUSCODE" != "200" -a "$STATUSCODE" != "202" ]; then

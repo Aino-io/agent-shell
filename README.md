@@ -2,7 +2,7 @@
 
 ![Build status](https://circleci.com/gh/Aino-io/agent-shell.svg?style=shield&circle-token=bde6cb9153f5ed7e43f6b99a8489b1b36b0dcb83)
 
-Download the latest beta-release: [agent-shell-amster_1.0-beta3.zip](https://github.com/Aino-io/agent-shell/releases/download/v1.0-beta3/agent-shell_1.0-beta3.zip)
+Download [the latest release](https://github.com/Aino-io/agent-shell/releases/)
 
 ## What is [Aino.io](http://aino.io) and what does this Agent have to do with it?
 

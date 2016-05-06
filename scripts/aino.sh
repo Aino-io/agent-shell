@@ -112,7 +112,7 @@ do
       ;;
     --send-artifact)
         add_aino_metadata "artifactType" "shellScript"
-        add_aino_metadata "artifactName" "`ps -o args= $PPID`"
+        add_aino_metadata "artifactName" "`ps -o args= $PPID 2> /dev/null`"
     ;;
     --send-hostname)
         add_aino_metadata "serverName" "`hostname`"
