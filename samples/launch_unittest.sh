@@ -19,6 +19,8 @@ export DEMO_BASE=$PWD
 export AINO_PAYLOAD_OUT="$DEMO_BASE/aino.out"
 export AINO_HTTP_OUT="$DEMO_BASE/curl.out"
 export SUREFIRE=$PWD/TEST-io.aino.shell.ShellAgentTest.xml
+export AINO_DISABLE_GZIP="true"
+
 
 echo > $AINO_PAYLOAD_OUT
 export EXIT_CODE=0
@@ -43,6 +45,7 @@ do
     OK_API_KEY=$AINO_API_KEY
 
     . tests/test_aino_log_success.sh $IMPL
+    . tests/test_aino_log_gzip.sh $IMPL
     . tests/test_aino_log_failure.sh $IMPL
 
     export AINO_API_KEY=$OK_API_KEY

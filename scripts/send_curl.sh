@@ -27,7 +27,7 @@ fi
 	AINO_URL="$3"
 	AINO_API_KEY="$4"
 	if [ "${VERBOSE_AINO}" = "true" ]; then
-        if [ "$AINO_DISABLE_GZIP" = "true" -o check_gzip() = "false"]; then
+        if [ "$AINO_DISABLE_GZIP" = "true" -o "`check_gzip`" = "false" ]; then
             OUTPUT="`curl -w \"\n%{http_code}\n\" -v -X POST -H\"Authorization: apikey ${AINO_API_KEY}\" -H'Content-type: application/json' ${AINO_URL} --data \"$2\" 2>&1`"
             echo "Command: curl -w \"\n%{http_code}\n\" -v -X POST -H\"Authorization: apikey ${AINO_API_KEY}\" -H'Content-type: application/json' ${AINO_URL} --data \"payload\" 2>&1"
         else

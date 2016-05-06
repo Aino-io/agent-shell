@@ -7,6 +7,7 @@ export AINO_API_KEY="<your-api-key-here>"
 # Other variables that can be set here: IMPLEMENTATION, AINO_URL, AINO_DISABLE_GZIP
 
 # Disable gzipping of the payload. Gzipping is enabled by default.
+# Only curl implementation supports gzipping and wget does not.
 #export AINO_DISABLE_GZIP=true
 
 # $IMPLEMENTATION defaults to 'autodetect', which first tries to

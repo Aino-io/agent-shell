@@ -14,7 +14,6 @@
 #   limitations under the License.
 
 if [ -e "${AINO_HOME}/base-functions.sh" ]; then
-    echo "LOADING BASE FUNCTIONS!"
     . "${AINO_HOME}/base-functions.sh"
 fi
 	if [ "`which wget`" = "" ]; then
@@ -40,7 +39,7 @@ fi
     fi
 
 	if [ "${VERBOSE_AINO}" = "true" ]; then
-        if [ $GZIP_TMP_FILE != "" ]; then
+        if [ -n ${GZIP_TMP_FILE+x} ]; then
             echo "Command: wget -nv --server-response --header=\"Content-Encoding: gzip\" --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-file $GZIP_TMP_FILE -O - 2>&1"
             echo "$OUTPUT"
         else
