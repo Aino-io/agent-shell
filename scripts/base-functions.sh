@@ -30,3 +30,19 @@ normal() {
    fi
 
 }
+
+check_gzip() {
+    if [ "`which gzip`" != "" ]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}
+
+check_mktemp() {
+    if [ "`which mktemp`" != "" ]; then
+        echo "true"
+    else
+        echo "false"
+    fi
+}

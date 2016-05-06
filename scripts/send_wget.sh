@@ -14,6 +14,7 @@
 #   limitations under the License.
 
 if [ -e "${AINO_HOME}/base-functions.sh" ]; then
+    echo "LOADING BASE FUNCTIONS!"
     . "${AINO_HOME}/base-functions.sh"
 fi
 	if [ "`which wget`" = "" ]; then
@@ -27,10 +28,25 @@ fi
 	if [ "$AINO_HTTP_OUT" != "" ]; then
 	    OUT=$AINO_HTTP_OUT
 	fi
-    OUTPUT="`wget -nv --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"$2\" -O - 2>&1`"
+    GZIP_EXISTS=$(check_gzip)
+    MKTEMP_EXISTS=$(check_mktemp)
+    if [ "$AINO_DISABLE_GZIP" = "true" -o $GZIP_EXISTS != "true" -o $MKTEMP_EXISTS != "true" ]; then
+        OUTPUT="`wget -nv --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"$2\" -O - 2>&1`"
+    else
+        GZIP_TMP_FILE=`mktemp`
+        echo "$2" | gzip -cf - > $GZIP_TMP_FILE
+        OUTPUT="`wget -nv --server-response --header=\"Content-Encoding: gzip\" --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-file $GZIP_TMP_FILE -O - 2>&1`"
+        rm $GZIP_TMP_FILE
+    fi
+
 	if [ "${VERBOSE_AINO}" = "true" ]; then
-	    echo "Command: wget -nv --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"payload\" -O - 2>&1"
-    	echo "$OUTPUT"
+        if [ $GZIP_TMP_FILE != "" ]; then
+            echo "Command: wget -nv --server-response --header=\"Content-Encoding: gzip\" --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-file $GZIP_TMP_FILE -O - 2>&1"
+            echo "$OUTPUT"
+        else
+            echo "Command: wget -nv --server-response --header=\"Authorization: apikey ${AINO_API_KEY}\" --header=\"Content-type: application/json\" ${AINO_URL} --post-data \"payload\" -O - 2>&1"
+        	echo "$OUTPUT"
+        fi
     fi
     echo "$OUTPUT" > $OUT
 
