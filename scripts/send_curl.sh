@@ -16,7 +16,7 @@
 if [ -e "${AINO_HOME}/base-functions.sh" ]; then
     . "${AINO_HOME}/base-functions.sh"
 fi
-	if [ "`which curl`" = "" ]; then
+	if [ "`which curl 2> /dev/null`" = "" ]; then
 		echo "Curl not found."
 		exit 1
 	fi
