@@ -25,5 +25,5 @@ ${AINO_HOME}/aino.sh --from "CRM" --to "Invoicing" --status "success" \
            --id "Random ID" "abc" "123" "xyzzy" \
            --send-hostname \
            --metadata "Custom metadata field" "metadata value" \
-           --config ../demo/aino-config.sh \
+           --config ../demo/aino-config.sh
            $*
