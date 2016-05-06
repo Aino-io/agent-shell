@@ -47,12 +47,12 @@ verbose_aino() {
     fi
 }
 detect_implementation() {
-    if [ "`which curl`" != "" ]; then
+    if [ "`which curl 2> /dev/null`" != "" ]; then
         echo curl
-    elif  [ "`which wget`" != "" ]; then
+    elif  [ "`which wget  2> /dev/null`" != "" ]; then
         echo wget
     fi
-
+    echo wget
 }
 
 
