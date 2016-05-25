@@ -27,14 +27,23 @@ fi
 	AINO_URL="$3"
 	AINO_API_KEY="$4"
 	if [ "${VERBOSE_AINO}" = "true" ]; then
-    	OUTPUT="`curl -w \"\n%{http_code}\n\" -v -X POST -H\"Authorization: apikey ${AINO_API_KEY}\" -H'Content-type: application/json' ${AINO_URL} --data \"$2\" 2>&1`"
-    	echo "Command: curl -w \"\n%{http_code}\n\" -v -X POST -H\"Authorization: apikey ${AINO_API_KEY}\" -H'Content-type: application/json' ${AINO_URL} --data \"payload\" 2>&1"
+        if [ "$AINO_DISABLE_GZIP" = "true" -o "`check_gzip`" = "false" ]; then
+            OUTPUT="`curl -w \"\n%{http_code}\n\" -v -X POST -H\"Authorization: apikey ${AINO_API_KEY}\" -H'Content-type: application/json' ${AINO_URL} --data \"$2\" 2>&1`"
+            echo "Command: curl -w \"\n%{http_code}\n\" -v -X POST -H\"Authorization: apikey ${AINO_API_KEY}\" -H'Content-type: application/json' ${AINO_URL} --data \"payload\" 2>&1"
+        else
+            OUTPUT="`echo \"$2\" | gzip -cf - | curl -w \"\n%{http_code}\n\" -v -X POST -H\"Content-Encoding: gzip\" -H\"Authorization: apikey ${AINO_API_KEY}\" -H'Content-type: application/json' ${AINO_URL} --data-binary @- 2>&1`"
+            echo "Command: echo \"payload\" | gzip -cf - | curl -w \"\n%{http_code}\n\" -v -X POST -H\"Content-Encoding: gzip\" -H\"Authorization: apikey ${AINO_API_KEY}\" -H'Content-type: application/json' ${AINO_URL} --data-binary @- 2>&1"
+        fi
     	echo "$OUTPUT"
         echo "$OUTPUT" > $OUT
         STATUSCODE="`echo \"$OUTPUT\"|tail -n1`"
         ERROR="`echo \"$OUTPUT\"|tail -n2|head -n1`"
 	else
-    	OUTPUT="`curl --silent  -w \"\n%{http_code}\n\"  -X POST -H\"Authorization: apikey \${AINO_API_KEY}\" -H"Content-type: application/json" ${AINO_URL} --data \"$2\" 2>&1`"
+        if [ "$AINO_DISABLE_GZIP" = "true" ]; then
+            OUTPUT="`curl --silent  -w \"\n%{http_code}\n\"  -X POST -H\"Authorization: apikey \${AINO_API_KEY}\" -H"Content-type: application/json" ${AINO_URL} --data \"$2\" 2>&1`"
+        else
+            OUTPUT="`echo \"$2\" | gzip -cf - | curl --silent  -w \"\n%{http_code}\n\"  -X POST -H\"Content-Encoding: gzip\" -H\"Authorization: apikey ${AINO_API_KEY}\" -H"Content-type: application/json" ${AINO_URL} --data-binary @- 2>&1`"
+        fi
         echo "$OUTPUT" > $OUT
         STATUSCODE="`echo \"$OUTPUT\"|tail -n1`"
         ERROR="`echo \"$OUTPUT\"|tail -n2|head -n1`"
@@ -44,5 +53,5 @@ fi
 	    echo "Error: Failed to send message to aino: $STATUSCODE $ERROR"
 	    normal
 	fi
-	export AINO_STATUS_CODE=$STATUS_CODE
+	export AINO_STATUS_CODE=$STATUSCODE
 

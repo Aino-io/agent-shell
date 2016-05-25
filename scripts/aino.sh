@@ -35,6 +35,7 @@ print_help() {
 	echo "  --flowid    \"[flowid]\"            Send the specified value as flow ID"
     echo "  --verbose                           Do verbose output"
     echo "  --config    <configuration file>    Load aino.io configuration (e.g. API key) from this file"
+    echo "  --no_gzip                           Disable gzipping of the payload"
 
     echo ""
     echo "Identifier handling:"
@@ -118,7 +119,10 @@ do
     ;;
     --verbose)
         export VERBOSE_AINO=true
-      ;;
+    ;;
+    --no_gzip)
+        export AINO_DISABLE_GZIP=true
+    ;;
     --help)
         help
         exit 0
