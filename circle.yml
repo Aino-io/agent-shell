@@ -1,10 +1,17 @@
 # CircleCI configuration file
 
 test:
-  override:
-    - cd samples ; ./launch_unittest.sh
+  pre:
+    # Create folders for both curl & wget unit test reports
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/wget
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/curl
 
-  # After running tests collect junit reports and build artifacts
-  post:
-    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
-    - find . -type f -regex "./samples/TEST.*" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;  #JUnit tests
+  override:
+    # run tests using curl
+    - export IMPLEMENTATION="curl" ; cd samples ; ./launch_unittest.sh
+    # collect unit reports
+    - find . -type f -regex "./samples/TEST.*" -exec cp {} $CIRCLE_TEST_REPORTS/junit/curl/ \; 
+    # run tests using wget
+    - export IMPLEMENTATION="wget" ; cd samples ; ./launch_unittest.sh
+    # collect unit reports
+    - find . -type f -regex "./samples/TEST.*" -exec cp {} $CIRCLE_TEST_REPORTS/junit/wget/ \; 
