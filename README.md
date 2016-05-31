@@ -1,4 +1,4 @@
-# Bourne Shell Agent for Aino.io 
+# Bourne Shell Agent for Aino.io
 
 ![Build status](https://circleci.com/gh/Aino-io/agent-shell.svg?style=shield&circle-token=bde6cb9153f5ed7e43f6b99a8489b1b36b0dcb83)
 
@@ -10,15 +10,14 @@ Download [the latest release](https://github.com/Aino-io/agent-shell/releases/)
 
 Aino.io works by analyzing transactions between enterprise applications and other pieces of software. This Agent helps to store data about the transactions to Aino.io platform using Aino.io Data API (version 2.0). See [API documentation](http://www.aino.io/api) for detailed information about the API.
 
-# How to use
+## Technical requirements
+* sh compatible shell
+* curl or wget
+* gzip (optional, used if exists)
 
-To log transactions into the aino.io monitoring systems, you need to carry out three steps:
+## Example usage
 
-1. Set the `AINO_HOME` variable to point to the directory where aino scripts were installed.
-2. Modify `aino-config.sh` that tells aino which API key to use.
-2. Invoke Aino.io.
-
-## Setting AINO_HOME
+### 1. Setting AINO_HOME
 You can set the `AINO_HOME` environment variable in your shell initialization file (e.g. `.bash_profile`), or at the start of your script.
 For example, if you had the aino scripts in `/opt/aino`, you could do at the start of your script:
 
@@ -26,7 +25,7 @@ For example, if you had the aino scripts in `/opt/aino`, you could do at the sta
 export AINO_HOME="/opt/aino"
 ```
 
-## Modify aino-config.sh
+### 2. Modify aino-config.sh
 Configure your API key in the `aino-config.sh`. The file should look like this:
 
 ```
@@ -42,14 +41,16 @@ If you prefer using the function to invoke aino logging, you can include the con
 . /location/to/aino-config.sh
 ```
 
-## Logging a transaction into Aino.io
-You can use the functions from `aino-libary.sh` to generate the request or use the `aino.sh` script
+### 2. Send a request to Aino.io:
 
-### Logging using `aino.sh`
+#### Minimal example (only required fields)
 
-`aino.sh` script allows you to pass each parameter with a switch. This naming of the parameters increases
-readability as there is no possibility of mixing up e.g. the source and target systems,
-or payload and operation.
+```
+${AINO_HOME}/aino.sh --from "Source system" --to "Target system" --status "success" \
+           --config /path/to/aino-config.sh
+```
+
+#### Full example
 
 ```
 ${AINO_HOME}/aino.sh --from "Source system" --to "Target system" --status "success" \
@@ -63,7 +64,7 @@ ${AINO_HOME}/aino.sh --from "Source system" --to "Target system" --status "succe
 
 Note that when identifiers are passed with the `--id` flag, the first string is interpreted as the human-readable type or name of the identifier, and the following list of strings are interpreted as the actual identifiers.
 
-If you wish to see what the aino client is doing, pass the `--verbose` flag into the aino.sh invocation.
+You can use the functions from `aino-libary.sh` to generate the request or use the `aino.sh` script
 
 # What to use as flow ID
 The flow ID, also known as correlation ID or correlation key is an identifier that allows aino
@@ -88,9 +89,13 @@ To have `init_flow_id` function available in your script, include aino.io functi
  ```
  . ${AINO_HOME}/aino-library.sh
  ```
+## Debugging
 
-# Tested environments
+If you wish to see what the aino client is doing, pass the `--verbose` flag into the aino.sh invocation.
 
+### Tested environments
+
+Agent shell has been tested in following environments:
 - Fedora 23:
 	- GNU bash, version 4.3.42(1)-release (x86_64-redhat-linux-gnu)
 	- curl 7.43.0 (x86_64-redhat-linux-gnu) libcurl/7.43.0 NSS/3.22 Basic ECC zlib/1.2.8 libidn/1.32 libssh2/1.6.0 nghttp2/1.7.1
@@ -101,7 +106,9 @@ To have `init_flow_id` function available in your script, include aino.io functi
 	- GNU bash
 	- KSH
 
-## Contributors
+## Contributing
+
+### Contributors
 
 - [Kalle Pahajoki](https://github.com/kallepahajoki)
 - [Jussi Mikkonen](https://github.com/jussi-mikkonen)
